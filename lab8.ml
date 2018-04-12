@@ -122,7 +122,10 @@ decide how to implement this.
 ......................................................................*)
                                                    
   let add_listener (evt : 'a event) (listener : 'a -> unit) : id =
-    failwith "WEvent.add_listener not implemented"
+    let person = {id = new_id (); action = listener} in
+    evt := person :: !evt ;
+    !id_counter
+;;
 
 (*......................................................................
 Exercise 2: Write remove_listener, which, given an id and an event,
@@ -131,7 +134,7 @@ one. If there is no listener with that id, do nothing.
 ......................................................................*)
             
   let remove_listener (evt : 'a event) (i : id) : unit =
-    failwith "WEvent.remove_listener not implemented"
+    evt := List.filter (fun x -> i <> x.id) !evt ;;
 
 (*......................................................................
 Exercise 3: Write fire_event, which will execute all event handlers
@@ -139,7 +142,7 @@ listening for the event.
 ......................................................................*)
             
   let fire_event (evt : 'a event) (arg : 'a) : unit =
-    failwith "WEvent.fire_event not implemented"
+    List.iter (fun x -> x.action arg) !evt ;;
 
 end
   
@@ -156,7 +159,7 @@ Exercise 4: Given your implementation of Event, create a new event
 called "newswire" that should pass strings to the event handlers.
 ......................................................................*)
   
-let newswire = fun _ -> failwith "newswire not implemented" ;;
+let newswire = WEvent.new_event () ;;
 
 (* News organizations might want to register event listeners to the
 newswire so that they might report on stories. Below are functions
@@ -175,6 +178,10 @@ newswire event.
 ......................................................................*)
   
 (* .. *)
+let id1 = WEvent.add_listener newswire fakeNewsNetwork ;;
+let id2 = WEvent.add_listener newswire buzzFake ;;
+WEvent.remove_listener newswire id1;;
+WEvent.fire_event newswire h1;;
 
 (* Here are some headlines to play with. *)
 
