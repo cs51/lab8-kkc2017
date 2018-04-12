@@ -178,16 +178,17 @@ newswire event.
 ......................................................................*)
   
 (* .. *)
-let id1 = WEvent.add_listener newswire fakeNewsNetwork ;;
-let id2 = WEvent.add_listener newswire buzzFake ;;
-WEvent.remove_listener newswire id1;;
-WEvent.fire_event newswire h1;;
 
 (* Here are some headlines to play with. *)
 
 let h1 = "the national animal of Eritrea is officially the camel!" ;;
 let h2 = "camels can run in short bursts up to 40mph!" ;;
 let h3 = "bactrian camels can weigh up to 2200lbs!" ;;
+
+let id1 = WEvent.add_listener newswire fakeNewsNetwork ;;
+let id2 = WEvent.add_listener newswire buzzFake ;;
+WEvent.remove_listener newswire id1;;
+WEvent.fire_event newswire h1;;
 
 (*......................................................................
 Exercise 6: Finally, fire newswire events with the above three
